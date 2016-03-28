@@ -1,11 +1,8 @@
 'use strict';
 
 var remove = function(arr) {
-  var args = [];
-  for (var i = 1, n = arguments.length; i < n; i++) {
-    args[i-1] = arguments[i];
-  }
-  //не верю что пишу такое, но далее три вложенных return-а!!!
+  var args = [].slice.call(arguments, 1);
+
   return arr.filter(function(item, index) {
     return args.every(function(current) {
       return index !== current;

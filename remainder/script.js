@@ -1,7 +1,7 @@
 'use strict';
 
 var remainder = function(div, den) {
-  return (div < 0) ? -(-div - Math.floor(-div / den) * den) : div - Math.floor(div/den) * den;
+  return (div * den < 0) ? -(-div - Math.floor(-div / den) * den) : div - Math.floor(div/den) * den;
 };
 
 
@@ -18,12 +18,14 @@ var test = function(element, data) {
 };
 
 test(document.getElementById('results'), [
-  remainder(12, 2),
-  remainder(17, 12),
-  remainder(11, 4),
-  remainder(5, 3),
-  remainder(5, 0),
-  remainder(-10, 3),
-  remainder(-1, 10),
-  remainder(-1, 0)
+  remainder(12, 2) + ' = ' + (12 % 2),
+  remainder(17, 12) + ' = ' + (17 % 12),
+  remainder(11, 4) + ' = ' + (11 % 4),
+  remainder(5, 3) + ' = ' + (5 % 3),
+  remainder(5, 0) + ' = ' + (5 % 0),
+  remainder(-10, 3) + ' = ' + (-10 % 3),
+  remainder(-1, 10) + ' = ' + (-1 % 10),
+  remainder(-1, -10) + ' = ' + (-1 % -10),
+  remainder(1, -10) + ' = ' + (1 % -10),
+  remainder(-1, 0) + ' = ' + (-1 % 0)
 ]);

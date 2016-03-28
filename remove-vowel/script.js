@@ -11,7 +11,7 @@ var removeLetters = function(str, letter) {
 var removeLetters2 = function(str, letter) {
   var strArr = str.split('');
 
-  var letterArr = letter ? letter.toLowerCase().split('') : ['a', 'o', 'e', 'i', 'y', 'u'];
+  var letterArr = (letter || 'aoeiyu').toLowerCase().split('');
 
   for (var i = 0, n = letterArr.length; i < n; i++) {
     letterArr.push(letterArr[i].toUpperCase());
