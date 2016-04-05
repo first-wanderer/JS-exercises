@@ -53,6 +53,62 @@ var $ = (function(selector) {
     return this;
   };
 
+  var argToArr = function(arg) {
+    var arrClass = [];
+
+    [].forEach.call(arg, function(item, i, arr) {
+      if (item.indexOf(' ') === -1) {
+        arrClass.push(item);
+      } else {
+        item.split(' ').forEach(function(partItem) {
+          arrClass.push(partItem);
+        });
+      }
+    });
+
+    return arrClass;
+  };
+
+  jQuery.prototype.addClass = function() {
+    var classItems = argToArr(arguments);
+
+    this.each(function(element) {
+      classItems.forEach(function(classItem) {
+        element.classList.add(classItem);
+      });
+    });
+
+    return this;
+  };
+
+  jQuery.prototype.removeClass = function() {
+    var classItems = argToArr(arguments);
+
+    this.each(function(element) {
+      classItems.forEach(function(classItem) {
+        element.classList.remove(classItem);
+      });
+    });
+
+    return this;
+  };
+
+  jQuery.prototype.toggleClass = function() {
+    var classItems = argToArr(arguments);
+
+    this.each(function(element) {
+      classItems.forEach(function(classItem) {
+        element.classList.toggle(classItem);
+      });
+    });
+
+    return this;
+  };
+
+  jQuery.prototype.hasClass = function(classItem) {
+    return this[0].classList.contains(classItem) ? true : false;
+  };
+
   var $$ = function(selector) {
     return new jQuery(selector);
   };
@@ -88,3 +144,12 @@ var fn = function() {
 $('#dec').on('change', fn);
 
 $('#dec').off('change', fn);
+
+$('.second').addClass('error', 'start middle finish', 'succes');
+
+$('.error').removeClass('start middle finish', 'succes');
+
+$('.error').toggleClass('second', 'start middle finish', 'succes');
+
+console.log($('li').hasClass('add'));
+console.log($('.error').hasClass('start'));
