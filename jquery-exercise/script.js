@@ -2,7 +2,15 @@ var $ = (function(selector) {
   'use strict';
 
   var jQuery = function(selector) {
+    if (typeof selector !== 'string') {
+      throw new Error('Expected string appropriate CSS selector');
+    }
+
     var elements = document.querySelectorAll(selector);
+
+    if (elements.length === 0) {
+      throw new Error('No elements appropriate CSS selector');
+    }
 
     for (var i = 0, n = elements.length; i < n; i++) {
       this[i] = elements[i];
@@ -20,7 +28,18 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.css = function(cssRule, cssValue) {
-    if (typeof cssRule === 'string') {
+    var typeRule = typeof cssRule;
+    var typeValue = typeof cssValue;
+
+    if (typeRule !== 'string' && typeRule !== 'object') {
+      throw new Error('Invalid data. For method "css" first argument expected string or object');
+    }
+
+    if (typeRule === 'string' && typeValue  !== 'string') {
+      throw new Error('Invalid data. For method "css" second argument expected string');
+    }
+
+    if (typeRule === 'string') {
       this.each(function(element) {
         element.style[cssRule] = cssValue;
       });
@@ -38,6 +57,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.on = function(event, handler) {
+    if (typeof event !== 'string' || typeof handler  !== 'function') {
+      throw new Error('Invalid data. For method "on" first argument expected type of event, second argument expected function');
+    }
+
     this.each(function(element) {
       element.addEventListener(event, handler);
     });
@@ -46,6 +69,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.off = function(event, handler) {
+    if (typeof event !== 'string' || typeof handler  !== 'function') {
+      throw new Error('Invalid data. For method "off" first argument expected type of event, second argument expected function');
+    }
+
     this.each(function(element) {
       element.removeEventListener(event, handler);
     });
@@ -70,6 +97,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.addClass = function() {
+    if (arguments.length === 0) {
+      throw new Error('Not passed arguments. For method "addClass" argument expected classes as string');
+    }
+
     var classItems = argToArr(arguments);
 
     this.each(function(element) {
@@ -82,6 +113,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.removeClass = function() {
+    if (arguments.length === 0) {
+      throw new Error('Not passed arguments. For method "removeClass" argument expected classes as string');
+    }
+
     var classItems = argToArr(arguments);
 
     this.each(function(element) {
@@ -94,6 +129,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.toggleClass = function() {
+    if (arguments.length === 0) {
+      throw new Error('Not passed arguments. For method "toggleClass" argument expected classes as string');
+    }
+
     var classItems = argToArr(arguments);
 
     this.each(function(element) {
@@ -106,6 +145,10 @@ var $ = (function(selector) {
   };
 
   jQuery.prototype.hasClass = function(classItem) {
+    if (arguments.length === 0) {
+      throw new Error('Not passed arguments. For method "hasClass" argument expected classes as string');
+    }
+
     return this[0].classList.contains(classItem) ? true : false;
   };
 
@@ -153,3 +196,5 @@ $('.error').toggleClass('second', 'start middle finish', 'succes');
 
 console.log($('li').hasClass('add'));
 console.log($('.error').hasClass('start'));
+
+
