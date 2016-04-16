@@ -84,10 +84,10 @@ var $ = (function(selector) {
     var arrClass = [];
 
     [].forEach.call(arg, function(item, i, arr) {
-      if (item.indexOf(' ') === -1) {
+      if (item.search(/\s/) === -1) {
         arrClass.push(item);
       } else {
-        item.split(' ').forEach(function(partItem) {
+        item.split(/\s/).forEach(function(partItem) {
           arrClass.push(partItem);
         });
       }
@@ -96,53 +96,29 @@ var $ = (function(selector) {
     return arrClass;
   };
 
-  jQuery.prototype.addClass = function() {
-    if (arguments.length === 0) {
-      throw new Error('Not passed arguments. For method "addClass" argument expected classes as string');
-    }
+  var workingClasses = function(action) {
+    return function() {
+      if (arguments.length === 0) {
+        throw new Error('Not passed arguments. For this method argument expected classes as string');
+      }
 
-    var classItems = argToArr(arguments);
+      var classItems = argToArr(arguments);
 
-    this.each(function(element) {
-      classItems.forEach(function(classItem) {
-        element.classList.add(classItem);
+      this.each(function(element) {
+        classItems.forEach(function(classItem) {
+          element.classList[action](classItem);
+        });
       });
-    });
 
-    return this;
+      return this;
+    };
   };
 
-  jQuery.prototype.removeClass = function() {
-    if (arguments.length === 0) {
-      throw new Error('Not passed arguments. For method "removeClass" argument expected classes as string');
-    }
+  jQuery.prototype.addClass = workingClasses('add');
 
-    var classItems = argToArr(arguments);
+  jQuery.prototype.removeClass = workingClasses('remove');
 
-    this.each(function(element) {
-      classItems.forEach(function(classItem) {
-        element.classList.remove(classItem);
-      });
-    });
-
-    return this;
-  };
-
-  jQuery.prototype.toggleClass = function() {
-    if (arguments.length === 0) {
-      throw new Error('Not passed arguments. For method "toggleClass" argument expected classes as string');
-    }
-
-    var classItems = argToArr(arguments);
-
-    this.each(function(element) {
-      classItems.forEach(function(classItem) {
-        element.classList.toggle(classItem);
-      });
-    });
-
-    return this;
-  };
+  jQuery.prototype.toggleClass = workingClasses('toggle');
 
   jQuery.prototype.hasClass = function(classItem) {
     if (arguments.length === 0) {
